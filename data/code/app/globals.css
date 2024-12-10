@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #ffffff;
+  --background: #0a0d1f;
+}
+
+body {
+  color: var(--foreground);
+  background: url('/mnt/data/92143acc-1962-4d11-8f45-cbd2b87f0752.jpg'), var(--background);
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Adding the new background layer */
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url('/mnt/data/92143acc-1962-4d11-8f45-cbd2b87f0752.jpg') no-repeat center center fixed;
+  background-size: cover;
+  filter: brightness(0.7) contrast(1.2) blur(2px);
+  mix-blend-mode: overlay;
+  animation: floatingBackground 20s infinite alternate ease-in-out;
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(10, 13, 31, 0.8),
+    rgba(59, 130, 246, 0.2)
+  );
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* Cyberpunk Grid Background */
+.bg-grid-pattern {
+  position: relative;
+  z-index: 0;
+  background-color: #0a0d1f;
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow: hidden;
+}
+
+.cyber-lines-enhanced {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.05) 0px,
+    rgba(59, 130, 246, 0.1) 1px,
+    transparent 1px,
+    transparent 30px
+  );
+  animation: cyber-lines-scroll 15s linear infinite;
+  opacity: 0.6;
+  mix-blend-mode: lighten;
+}
+
+/* Hero Section Content Styles */
+.hero-section-content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  padding-top: 25vh;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  background: rgba(10, 13, 31, 0.4);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+/* Cyber Button Styles */
+.cyber-button {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 2rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  animation: button-float 3s ease-in-out infinite;
+}
+
+.cyber-button.primary {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.8);
+}
+
+.cyber-button:hover {
+  background: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes floatingBackground {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-20px) translateX(-15px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+@keyframes button-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes cyber-lines-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(30px); }
+}
+
+/* Add these right after your existing animations in globals.css */
+@keyframes glow {
+  0%, 100% { 
+    box-shadow: 0px 0px 25px 10px rgba(0, 200, 83, 0.9);
+  }
+  50% { 
+    box-shadow: 0px 0px 35px 15px rgba(0, 200, 83, 0.95);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    box-shadow: 0px 0px 25px 10px rgba(255, 165, 0, 0.9);
+  }
+  50% { 
+    box-shadow: 0px 0px 35px 15px rgba(255, 165, 0, 0.95);
+  }
+}
+
+/* Wallet Adapter Modal Styles */
+.wallet-adapter-modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  z-index: 50 !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  padding: 1rem !important;
+  margin: auto !important;
+  top: 80%;
+}
+
+/* Enhanced Cyber Card */
+.cyber-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(10, 13, 31, 0.8);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 0 10px rgba(59, 130, 246, 0.2),
+    inset 0 0 20px rgba(59, 130, 246, 0.1);
+  transition: all 0.3s ease;
+}
+
+.cyber-card:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.3),
+    inset 0 0 30px rgba(59, 130, 246, 0.2);
+}
+
+/* Neon Effects */
+.neon-text {
+  color: #fff;
+  text-shadow: 
+    0 0 5px rgba(59, 130, 246, 0.5),
+    0 0 10px rgba(59, 130, 246, 0.5),
+    0 0 15px rgba(59, 130, 246, 0.5);
+}
