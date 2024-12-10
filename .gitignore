@@ -1,0 +1,23 @@
+# Environment
+.env
+venv/
+__pycache__/
+*.pyc
+
+# Vector store
+data/vector_store/
+
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+*.pem
+.DS_Store
