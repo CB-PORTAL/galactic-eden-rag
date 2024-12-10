@@ -1,27 +1,22 @@
-from rag_system import GalacticEdenDev
+# Save this exactly as shown in chat.py
+from galactic_eden_ai import GalacticEdenAI
 
 def main():
-    # Initialize the development assistant
-    print("Initializing Galactic Eden Development Assistant...")
-    dev = GalacticEdenDev()
+    print("Initializing Galactic Eden AI...")
+    ai = GalacticEdenAI()
     
-    # Ingest codebase
-    print("Indexing codebase...")
-    dev.ingest_codebase()
-    
-    print("\nGalactic Eden Development Assistant Ready!")
+    print("\nGalactic Eden AI is ready!")
     print("Type 'quit' to exit")
     
-    # Chat loop
     while True:
-        user_input = input("\nWhat would you like to know about the presale site? ")
-        
-        if user_input.lower() == 'quit':
-            break
-            
         try:
-            response = dev.chat(user_input)
-            print("\nClaude:", response)
+            user_input = input("\nHow can I help with Galactic Eden? ")
+            
+            if user_input.lower() == 'quit':
+                break
+                
+            response = ai.chat(user_input)
+            print("\nGalactic Eden AI:", response)
         except Exception as e:
             print(f"Error: {e}")
 
