@@ -12,17 +12,18 @@ class GalacticEdenAI:
             raise ValueError("Model path not found in .env file")
         print(f"Loading Llama model from: {model_path}")
         
-        # Initialize Llama model
+        # Initialize Llama model with better settings for coding
         self.llm = Llama(
             model_path=model_path,
             n_ctx=4096,
-            n_gpu_layers=-1  # Use GPU if available
+            n_gpu_layers=-1,  # Use GPU if available
+            n_threads=8       # Adjust based on your CPU
         )
         
         # Initialize vector database
         self.chroma_client = chromadb.PersistentClient(path="data/vector_store")
         self.collection = self._initialize_collection()
-
+        print("Vector database initialized")
     def _initialize_collection(self):
         try:
             return self.chroma_client.create_collection(name="galactic-eden")
@@ -46,8 +47,8 @@ class GalacticEdenAI:
     def chat(self, user_input: str) -> str:
         context = self.get_relevant_context(user_input)
         
-        prompt = f"""You are Galactic Eden AI, an advanced assistant with deep knowledge of the Galactic Eden project.
-        
+        prompt = f"""You are Galactic Eden AI, an advanced coding assistant with deep knowledge of web3, blockchain, and the Galactic Eden project. You excel at helping with development tasks, especially for presale websites and smart contracts.
+
 Context:
 {context}
 
