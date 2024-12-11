@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ava - Galactic Eden AI Assistant</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <style>
+            html, body {
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+                background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+                font-family: 'Space Grotesk', sans-serif;
+            }
+            h1, h2, h3, .title-text {
+                font-family: 'Orbitron', sans-serif;
+            }
+            .app-container {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+                position: relative;
+                z-index: 1;
+            }
+            .app-container::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, #0f172a 0%, #1e1b4b 100%);
+                background-size: 400% 400%;
+                animation: gradientFlow 15s ease infinite;
+                z-index: -1;
+            }
+            @keyframes gradientFlow {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            .title-line {
+                width: 2px;
+                height: 30px;
+                background: linear-gradient(to bottom, transparent, #0284c7, transparent);
+                margin: 0 auto 0.5rem;
+                position: relative;
+                animation: scanline 3s ease-in-out infinite;
+            }
+            .title-line::before,
+            .title-line::after {
+                content: '';
+                position: absolute;
+                width: 15px;
+                height: 3px;
+                background: #0284c7;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                filter: blur(2px);
+            }
+            .title-line::before {
+                top: 0;
+                animation: scanTop 3s ease-in-out infinite;
+            }
+            .title-line::after {
+                bottom: 0;
+                animation: scanBottom 3s ease-in-out infinite;
+            }
+            @keyframes scanline {
+                0%, 100% {
+                    height: 30px;
+                    box-shadow: 0 0 15px #0284c7;
+                }
+                50% {
+                    height: 2px;
+                    box-shadow: 0 0 30px #0284c7;
+                }
+            }
+            @keyframes scanTop {
+                0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.3; }
+                50% { transform: translateX(-50%) scaleX(0.2); opacity: 1; }
+            }
+            @keyframes scanBottom {
+                0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.3; }
+                50% { transform: translateX(-50%) scaleX(0.2); opacity: 1; }
+            }
+            .chat-container {
+                flex: 1;
+                position: relative;
+                margin: 1rem 0;
+                min-height: 0;
+            }
+            #chat-messages {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                overflow-y: vertical;
+                padding-right: 0.5rem;
+            }
+            #chat-messages::-webkit-scrollbar {
+                width: 8px;
+            }
+            #chat-messages::-webkit-scrollbar-track {
+                background: rgba(15, 23, 42, 0.3);
+                border-radius: 4px;
+            }
+            #chat-messages::-webkit-scrollbar-thumb {
+                background: rgba(2, 132, 199, 0.5);
+                border-radius: 4px;
+            }
+            #chat-messages::-webkit-scrollbar-thumb:hover {
+                background: rgba(2, 132, 199, 0.7);
+            }
+            .message {
+                max-width: 85%;
+                margin: 0.75rem;
+                padding: 1rem;
+                border-radius: 0.75rem;
+                position: relative;
+                animation: messageSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .message::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 0.75rem;
+                background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                animation: shimmer 2s infinite;
+                z-index: -1;
+            }
+            @keyframes shimmer {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+            }
+            .user-message {
+                background: rgba(59, 130, 246, 0.15);
+                margin-left: auto;
+                transform-origin: right;
+            }
+            .ai-message {
+                background: rgba(255, 255, 255, 0.08);
+                margin-right: auto;
+                transform-origin: left;
+            }
+            .input-field {
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(59, 130, 246, 0.3);
+                color: white;
+                padding: 0.75rem 1rem;
+                border-radius: 0.5rem;
+                transition: all 0.3s ease;
+                font-family: 'Space Grotesk', sans-serif;
+            }
+            .input-field:focus {
+                border-color: #0284c7;
+                box-shadow: 0 0 20px rgba(2, 132, 199, 0.3);
+                outline: none;
+                background: rgba(0, 0, 0, 0.4);
+            }
+            .send-button {
+                font-family: 'Orbitron', sans-serif;
+                background: linear-gradient(45deg, #0284c7, #0369a1);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            .send-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: 0.5s;
+            }
+            .send-button:hover::before {
+                left: 100%;
+            }
+            .send-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(2, 132, 199, 0.3);
+            }
+            @keyframes messageSlide {
+                from { transform: scale(0.95); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+            }
+            .input-area {
+                margin-top: 1rem;
+                display: flex;
+            }
+            .input-container {
+                display: flex;
+                gap: 0.5rem;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body class="text-white">
+        <div class="app-container">
+            <header class="header">
+                <div class="title-line"></div>
+                <h1 class="text-4xl font-bold">Ava</h1>
+                <p class="text-sky-200 mt-1">Your Gateway to the Galactic Eden Universe</p>
+            </header>
+
+            <div class="chat-container">
+                <div id="chat-messages"></div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-container">
+                    <input
+                        type="text"
+                        id="message-input"
+                        class="input-field"
+                        placeholder="What would you like to know about Galactic Eden?"
+                    >
+                    <button onclick="sendMessage()" class="send-button">Ask Ava</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let ws = new WebSocket(`ws://${window.location.host}/chat`);
+            const messagesDiv = document.getElementById('chat-messages');
+            const input = document.getElementById('message-input');
+
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            function addMessage(message, isUser) {
+                const div = document.createElement('div');
+                div.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+                div.textContent = message;
+                messagesDiv.appendChild(div);
+                div.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function sendMessage() {
+                const message = input.value.trim();
+                if (!message) return;
+                addMessage(message, true);
+                ws.send(message);
+                input.value = '';
+            }
+
+            ws.onmessage = function(event) {
+                addMessage(event.data, false);
+            };
+
+            ws.onclose = function() {
+                addMessage("Connection lost. Please refresh the page.", false);
+            };
+
+            window.onload = function() {
+                addMessage("Hello! I'm Ava, your guide to the Galactic Eden universe. What would you like to know?", false);
+            };
+        </script>
+    </body>
+</html>
