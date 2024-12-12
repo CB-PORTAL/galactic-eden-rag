@@ -7,6 +7,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
         <style>
+            /* Base styles */
             html, body {
                 height: 100vh;
                 margin: 0;
@@ -14,9 +15,22 @@
                 background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
                 font-family: 'Space Grotesk', sans-serif;
             }
+
             h1, h2, h3, .title-text {
                 font-family: 'Orbitron', sans-serif;
             }
+
+            /* Version number */
+            .version {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                font-size: 0.875rem;
+                color: rgba(255, 255, 255, 0.5);
+                font-family: 'Space Grotesk', sans-serif;
+            }
+
+            /* App container */
             .app-container {
                 height: 100vh;
                 display: flex;
@@ -25,6 +39,7 @@
                 position: relative;
                 z-index: 1;
             }
+
             .app-container::before {
                 content: '';
                 position: fixed;
@@ -37,11 +52,20 @@
                 animation: gradientFlow 15s ease infinite;
                 z-index: -1;
             }
+
+            /* Animations */
             @keyframes gradientFlow {
                 0% { background-position: 0% 50%; }
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
             }
+
+            .header {
+                position: relative;
+                text-align: center;
+            }
+
+            /* Title line animations */
             .title-line {
                 width: 2px;
                 height: 30px;
@@ -50,6 +74,7 @@
                 position: relative;
                 animation: scanline 3s ease-in-out infinite;
             }
+
             .title-line::before,
             .title-line::after {
                 content: '';
@@ -62,14 +87,17 @@
                 opacity: 0;
                 filter: blur(2px);
             }
+
             .title-line::before {
                 top: 0;
                 animation: scanTop 3s ease-in-out infinite;
             }
+
             .title-line::after {
                 bottom: 0;
                 animation: scanBottom 3s ease-in-out infinite;
             }
+
             @keyframes scanline {
                 0%, 100% {
                     height: 30px;
@@ -80,46 +108,58 @@
                     box-shadow: 0 0 30px #0284c7;
                 }
             }
+
             @keyframes scanTop {
                 0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.3; }
                 50% { transform: translateX(-50%) scaleX(0.2); opacity: 1; }
             }
+
             @keyframes scanBottom {
                 0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.3; }
                 50% { transform: translateX(-50%) scaleX(0.2); opacity: 1; }
             }
+
+            /* Chat container */
             .chat-container {
                 flex: 1;
                 position: relative;
                 margin: 1rem 0;
                 min-height: 0;
             }
+
             #chat-messages {
                 position: absolute;
                 top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                overflow-y: vertical;
+                overflow-y: auto;
                 padding-right: 0.5rem;
             }
+
+            /* Scrollbar styling */
             #chat-messages::-webkit-scrollbar {
                 width: 8px;
             }
+
             #chat-messages::-webkit-scrollbar-track {
                 background: rgba(15, 23, 42, 0.3);
                 border-radius: 4px;
             }
+
             #chat-messages::-webkit-scrollbar-thumb {
                 background: rgba(2, 132, 199, 0.5);
                 border-radius: 4px;
             }
+
             #chat-messages::-webkit-scrollbar-thumb:hover {
                 background: rgba(2, 132, 199, 0.7);
             }
+
+            /* Messages */
             .message {
                 max-width: 85%;
-                margin: 0.75rem;
+                margin: 0;
                 padding: 1rem;
                 border-radius: 0.75rem;
                 position: relative;
@@ -127,6 +167,7 @@
                 backdrop-filter: blur(8px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
             }
+
             .message::before {
                 content: '';
                 position: absolute;
@@ -139,21 +180,71 @@
                 animation: shimmer 2s infinite;
                 z-index: -1;
             }
-            @keyframes shimmer {
-                0% { transform: translateX(-100%); }
-                100% { transform: translateX(100%); }
-            }
+
             .user-message {
                 background: rgba(59, 130, 246, 0.15);
                 margin-left: auto;
                 transform-origin: right;
             }
+
             .ai-message {
                 background: rgba(255, 255, 255, 0.08);
                 margin-right: auto;
                 transform-origin: left;
             }
+
+            /* Thinking indicator */
+            .thinking-indicator {
+                display: none;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                margin: 0.5rem auto;
+                color: #60a5fa;
+                animation: pulse 2s infinite;
+                background: rgba(15, 23, 42, 0.5);
+                backdrop-filter: blur(8px);
+                border-radius: 0.75rem;
+                border: 1px solid rgba(96, 165, 250, 0.2);
+                width: fit-content;
+                position: relative;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .thinking-indicator.visible {
+                opacity: 1;
+            }
+
+            @keyframes pulse {
+                0% { opacity: 0.3; }
+                50% { opacity: 1; }
+                100% { opacity: 0.3; }
+            }
+
+            /* Input area */
+            .input-area {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(8px);
+                padding: 1rem;
+                border-top: 1px solid rgba(59, 130, 246, 0.3);
+                z-index: 10;
+            }
+
+            .input-container {
+                display: flex;
+                gap: 0.5rem;
+                width: 100%;
+                max-width: 900px;
+                margin: 0 auto;
+            }
+
             .input-field {
+                flex-grow: 1;
                 background: rgba(0, 0, 0, 0.3);
                 border: 1px solid rgba(59, 130, 246, 0.3);
                 color: white;
@@ -162,12 +253,14 @@
                 transition: all 0.3s ease;
                 font-family: 'Space Grotesk', sans-serif;
             }
+
             .input-field:focus {
                 border-color: #0284c7;
                 box-shadow: 0 0 20px rgba(2, 132, 199, 0.3);
                 outline: none;
                 background: rgba(0, 0, 0, 0.4);
             }
+
             .send-button {
                 font-family: 'Orbitron', sans-serif;
                 background: linear-gradient(45deg, #0284c7, #0369a1);
@@ -178,6 +271,7 @@
                 position: relative;
                 overflow: hidden;
             }
+
             .send-button::before {
                 content: '';
                 position: absolute;
@@ -188,30 +282,30 @@
                 background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
                 transition: 0.5s;
             }
+
             .send-button:hover::before {
                 left: 100%;
             }
+
             .send-button:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 5px 15px rgba(2, 132, 199, 0.3);
             }
+
             @keyframes messageSlide {
                 from { transform: scale(0.95); opacity: 0; }
                 to { transform: scale(1); opacity: 1; }
             }
-            .input-area {
-                margin-top: 1rem;
-                display: flex;
-            }
-            .input-container {
-                display: flex;
-                gap: 0.5rem;
-                width: 100%;
+
+            @keyframes shimmer {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
             }
         </style>
     </head>
     <body class="text-white">
         <div class="app-container">
+            <div class="version">v1.0</div>
             <header class="header">
                 <div class="title-line"></div>
                 <h1 class="text-4xl font-bold">Ava</h1>
@@ -239,10 +333,46 @@
             let ws = new WebSocket(`ws://${window.location.host}/chat`);
             const messagesDiv = document.getElementById('chat-messages');
             const input = document.getElementById('message-input');
-
+            
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') sendMessage();
             });
+
+            function createThinkingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.id = 'thinking-indicator';
+                indicator.className = 'thinking-indicator';
+                indicator.innerHTML = `
+                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Processing quantum data streams...</span>
+                `;
+                return indicator;
+            }
+
+            function showThinking() {
+                let indicator = document.getElementById('thinking-indicator');
+                if (!indicator) {
+                    indicator = createThinkingIndicator();
+                    messagesDiv.appendChild(indicator);
+                }
+                indicator.style.display = 'flex';
+                setTimeout(() => {
+                    indicator.classList.add('visible');
+                }, 10);
+            }
+
+            function hideThinking() {
+                const indicator = document.getElementById('thinking-indicator');
+                if (indicator) {
+                    indicator.classList.remove('visible');
+                    setTimeout(() => {
+                        indicator.style.display = 'none';
+                    }, 300);
+                }
+            }
 
             function addMessage(message, isUser) {
                 const div = document.createElement('div');
@@ -256,15 +386,18 @@
                 const message = input.value.trim();
                 if (!message) return;
                 addMessage(message, true);
+                showThinking();
                 ws.send(message);
                 input.value = '';
             }
 
             ws.onmessage = function(event) {
+                hideThinking();
                 addMessage(event.data, false);
             };
 
             ws.onclose = function() {
+                hideThinking();
                 addMessage("Connection lost. Please refresh the page.", false);
             };
 
